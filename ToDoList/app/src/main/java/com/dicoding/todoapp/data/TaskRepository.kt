@@ -8,7 +8,6 @@ import com.dicoding.todoapp.utils.FilterUtils
 import com.dicoding.todoapp.utils.TasksFilterType
 
 class TaskRepository(private val tasksDao: TaskDao) {
-
     companion object {
         const val PAGE_SIZE = 30
         const val PLACEHOLDERS = true
