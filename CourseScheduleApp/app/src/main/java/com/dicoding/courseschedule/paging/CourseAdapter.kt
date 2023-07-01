@@ -1,8 +1,15 @@
 package com.dicoding.courseschedule.paging
 
+import android.content.Intent
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.TextView
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.data.Course
 
 //TODO 6 : Implement Method for PagedListAdapter
@@ -22,10 +29,11 @@ class CourseAdapter(private val clickListener: (Course) -> Unit) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
-        throw NotImplementedError()
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_course, parent, false)
+        return CourseViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
-
+        holder.bind()
     }
 }
