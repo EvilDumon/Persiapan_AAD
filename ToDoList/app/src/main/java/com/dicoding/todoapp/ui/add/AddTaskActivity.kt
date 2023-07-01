@@ -1,5 +1,6 @@
 package com.dicoding.todoapp.ui.add
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -7,19 +8,29 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.todoapp.R
+import com.dicoding.todoapp.data.Task
+import com.dicoding.todoapp.ui.detail.DetailTaskViewModel
 import com.dicoding.todoapp.utils.DatePickerFragment
+import com.google.android.material.textfield.TextInputEditText
+import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddTaskActivity : AppCompatActivity(), DatePickerFragment.DialogDateListener {
     private var dueDateMillis: Long = System.currentTimeMillis()
 
+    private lateinit var addTaskViewModel: AddTaskViewModel
+    private lateinit var edTitle: TextInputEditText
+    private lateinit var edDescription: TextInputEditText
+
+    @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
 
         supportActionBar?.title = getString(R.string.add_task)
-
+        edTitle = findViewById(R.id.add_ed_title)
+        edDescription = findViewById(R.id.add_ed_description)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -31,6 +42,13 @@ class AddTaskActivity : AppCompatActivity(), DatePickerFragment.DialogDateListen
         return when (item.itemId) {
             R.id.action_save -> {
                 //TODO 12 : Create AddTaskViewModel and insert new task to database
+                addTaskViewModel.addTask(
+                    Task(
+                        title = edTitle.text.toString(),
+                        description = edDescription.text.toString(),
+                        dueDateMillis = dueDateMillis,
+                    )
+                )
                 true
             }
             else -> super.onOptionsItemSelected(item)
