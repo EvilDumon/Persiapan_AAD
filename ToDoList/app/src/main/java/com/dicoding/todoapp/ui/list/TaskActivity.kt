@@ -48,14 +48,12 @@ class TaskActivity : AppCompatActivity() {
         taskViewModel.tasks.observe(this, Observer(this::showRecyclerView))
 
         //TODO 15 : Fixing bug : snackBar not show when task completed
-
     }
 
     private fun showRecyclerView(task: PagedList<Task>) {
         //TODO 7 : Submit pagedList to adapter and update database when onCheckChange
         val adapter = TaskAdapter()
         recycler.adapter = adapter
-        task.forEach(::println)
         adapter.submitList(task)
     }
 

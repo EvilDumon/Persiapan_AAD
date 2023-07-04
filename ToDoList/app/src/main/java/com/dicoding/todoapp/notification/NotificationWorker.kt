@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.TaskStackBuilder
+import androidx.preference.PreferenceManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.dicoding.todoapp.data.Task
@@ -30,8 +31,12 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
         }
     }
 
+    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
     override fun doWork(): Result {
-        //TODO 14 : If notification preference on, get nearest active task from repository and show notification with pending intent
+        //TODO 14 : If notification preference on,
+        //get nearest active task from repository and show notification with pending intent
+        sharedPreferences.getBoolean("pref_key_notify", false)
+
         return Result.success()
     }
 
