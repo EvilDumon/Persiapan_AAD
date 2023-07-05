@@ -1,7 +1,7 @@
 package com.dicoding.courseschedule.ui.home
 
 import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.intent.Intents
@@ -26,9 +26,9 @@ class HomeActivityTest {
     @Test
     fun clickPlusWillDisplayAddCourseActivity(){
         Intents.init()
-        Espresso.onView(ViewMatchers.withId(R.id.action_add)).perform(ViewActions.click())
+        onView(ViewMatchers.withId(R.id.action_add)).perform(ViewActions.click())
         Intents.intended(IntentMatchers.hasComponent(AddCourseActivity::class.java.name))
-        Espresso.onView(ViewMatchers.withId(R.id.tv_course_name))
+        onView(ViewMatchers.withId(R.id.tv_course_name))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }
