@@ -10,7 +10,6 @@ import com.dicoding.todoapp.utils.TasksFilterType
 import kotlinx.coroutines.launch
 
 class AddTaskViewModel(private val taskRepository: TaskRepository) : ViewModel() {
-
     fun addTask(task: Task) {
         viewModelScope.launch {
             taskRepository.insertTask(task)

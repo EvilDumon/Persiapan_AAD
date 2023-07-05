@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.Observer
@@ -43,16 +44,19 @@ class TaskActivity : AppCompatActivity() {
         initAction()
 
         val factory = ViewModelFactory.getInstance(this)
-        taskViewModel = ViewModelProvider(this, factory).get(TaskViewModel::class.java)
+        taskViewModel = ViewModelProvider(this, factory).get( TaskViewModel::class.java )
 
-        taskViewModel.tasks.observe(this, Observer(this::showRecyclerView))
+        taskViewModel.tasks.observe(this, Observer( this::showRecyclerView ))
 
         //TODO 15 : Fixing bug : snackBar not show when task completed
+        taskViewModel.snackbarText.observe(this, Observer ( this::showSnackBar ))
     }
 
     private fun showRecyclerView(task: PagedList<Task>) {
         //TODO 7 : Submit pagedList to adapter and update database when onCheckChange
-        val adapter = TaskAdapter()
+        val adapter = TaskAdapter{ mTask, isChecked ->
+            taskViewModel.completeTask( mTask, isChecked )
+        }
         recycler.adapter = adapter
         adapter.submitList(task)
     }

@@ -1,12 +1,13 @@
 package com.dicoding.todoapp.ui.list
 
 import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.matcher.IntentMatchers
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.dicoding.todoapp.R
 import com.dicoding.todoapp.ui.add.AddTaskActivity
@@ -27,9 +28,9 @@ class TaskActivityTest {
     @Test
     fun clickPlusWillDisplayAddTaskActivity(){
         Intents.init()
-        Espresso.onView(ViewMatchers.withId(R.id.fab)).perform(ViewActions.click())
-        Intents.intended(IntentMatchers.hasComponent(AddTaskActivity::class.java.name))
-        Espresso.onView(ViewMatchers.withId(R.id.add_ed_title))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.fab)).perform(click())
+        Intents.intended(hasComponent(AddTaskActivity::class.java.name))
+        onView(withId(R.id.add_ed_title))
+            .check(ViewAssertions.matches(isDisplayed()))
     }
 }

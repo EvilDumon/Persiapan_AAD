@@ -9,10 +9,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.todoapp.R
 import com.dicoding.todoapp.data.Task
-import com.dicoding.todoapp.ui.detail.DetailTaskViewModel
 import com.dicoding.todoapp.utils.DatePickerFragment
 import com.google.android.material.textfield.TextInputEditText
-import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.util.*
 
