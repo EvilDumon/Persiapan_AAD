@@ -1,4 +1,4 @@
-package com.dicoding.todoapp.ui.list
+package com.dicoding.courseschedule.ui.home
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso
@@ -8,28 +8,27 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.dicoding.todoapp.R
-import com.dicoding.todoapp.ui.add.AddTaskActivity
 import org.junit.Assert.*
-
+import com.dicoding.courseschedule.R
+import com.dicoding.courseschedule.ui.add.AddCourseActivity
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
-//TODO 16 : Write UI test to validate when user tap Add Task (+), the AddTaskActivity displayed
 @RunWith(AndroidJUnit4ClassRunner::class)
-class TaskActivityTest {
+class HomeActivityTest {
+
     @Before
-    fun setup(){
-        ActivityScenario.launch(TaskActivity::class.java)
+    fun setUp() {
+        ActivityScenario.launch(HomeActivity::class.java)
     }
 
     @Test
-    fun clickPlusWillDisplayAddTaskActivity(){
+    fun clickPlusWillDisplayAddCourseActivity(){
         Intents.init()
-        Espresso.onView(ViewMatchers.withId(R.id.fab)).perform(ViewActions.click())
-        Intents.intended(IntentMatchers.hasComponent(AddTaskActivity::class.java.name))
-        Espresso.onView(ViewMatchers.withId(R.id.add_ed_title))
+        Espresso.onView(ViewMatchers.withId(R.id.action_add)).perform(ViewActions.click())
+        Intents.intended(IntentMatchers.hasComponent(AddCourseActivity::class.java.name))
+        Espresso.onView(ViewMatchers.withId(R.id.tv_course_name))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }
