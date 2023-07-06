@@ -16,6 +16,7 @@ import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import java.util.concurrent.Executors
 import kotlin.concurrent.timerTask
 
 //TODO 3 : Define room database class and prepopulate database using JSON
@@ -39,7 +40,16 @@ abstract class TaskDatabase : RoomDatabase() {
                     TaskDatabase::class.java,
                     "task.db"
                 )
-                    .addCallback(StartingNotes(context))
+                    .addCallback(object : Callback(){
+                        override fun onCreate(db: SupportSQLiteDatabase) {
+                            super.onCreate(db)
+                            INSTANCE?.let { database ->
+                                Executors.newSingleThreadExecutor().execute {
+                                    fillWithStartingData(context, database.taskDao())
+                                }
+                            }
+                        }
+                    })
                     .build()
                 INSTANCE = instance
                 instance
@@ -85,14 +95,6 @@ abstract class TaskDatabase : RoomDatabase() {
                 exception.printStackTrace()
             }
             return null
-        }
-
-    }
-    class StartingNotes(private val context: Context) :Callback() {
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            super.onCreate(db)
-            val dao = getInstance(context).taskDao()
-            fillWithStartingData(context, dao)
         }
     }
 }

@@ -4,6 +4,7 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -30,7 +31,6 @@ class TaskActivityTest {
         Intents.init()
         onView(withId(R.id.fab)).perform(click())
         Intents.intended(hasComponent(AddTaskActivity::class.java.name))
-        onView(withId(R.id.add_ed_title))
-            .check(ViewAssertions.matches(isDisplayed()))
+        onView(withId(R.id.add_ed_title)).check(matches(isDisplayed()))
     }
 }

@@ -43,15 +43,15 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
         val notificationPref =  sharedPreferences.getBoolean(applicationContext.getString(R.string.pref_key_notify), false)
 
             if (notificationPref) {
-                val activeTask = taskRepository.getNearestActiveTask()
+                val task = taskRepository.getNearestActiveTask()
 
-                val pendingIntent = getPendingIntent(activeTask)
+                val pendingIntent = getPendingIntent(task)
 
                 val notificationBuilder =
                     channelName?.let {
                         NotificationCompat.Builder(applicationContext, it)
-                            .setContentTitle(activeTask.title)
-                            .setContentText(String.format(applicationContext.getString(R.string.notify_content), activeTask.description))
+                            .setContentTitle(task.title)
+                            .setContentText(String.format(applicationContext.getString(R.string.notify_content), task.description))
                             .setSmallIcon(R.drawable.ic_notifications)
                             .setContentIntent(pendingIntent)
                             .setAutoCancel(true)
@@ -60,7 +60,7 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
 
                 val notificationManager = NotificationManagerCompat.from(applicationContext)
                 notificationBuilder?.let {
-                    notificationManager.notify(NOTIFICATION_CHANNEL_ID, it.build())
+                    notificationManager.notify(task.id, it.build())
                 }
             }
         return Result.success()
