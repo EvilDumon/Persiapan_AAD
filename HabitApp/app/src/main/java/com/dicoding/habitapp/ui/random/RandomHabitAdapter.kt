@@ -3,6 +3,7 @@ package com.dicoding.habitapp.ui.random
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -45,11 +46,11 @@ class RandomHabitAdapter(
         private val startTime = itemView.findViewById<TextView>(R.id.pager_tv_start_time)
         private val ivPriority = itemView.findViewById<ImageView>(R.id.item_priority_level)
         private val minutes = itemView.findViewById<TextView>(R.id.pager_tv_minutes)
-        private val btnCountDown = itemView.findViewById<TextView>(R.id.btn_open_count_down)
+        private val btnCountDown = itemView.findViewById<Button>(R.id.btn_open_count_down)
         fun bind(pageType: PageType, pageData: Habit) {
             title.text = pageData.title
             startTime.text = pageData.startTime
-            minutes.text = pageData.minutesFocus
+            minutes.text = pageData.minutesFocus.toInt().toString()
             when(pageType){
                 PageType.LOW -> ivPriority.setImageResource(R.drawable.ic_priority_low)
                 PageType.MEDIUM -> ivPriority.setImageResource(R.drawable.ic_priority_medium)

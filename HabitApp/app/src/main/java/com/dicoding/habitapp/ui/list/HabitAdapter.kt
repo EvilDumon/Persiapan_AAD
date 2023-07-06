@@ -1,5 +1,6 @@
 package com.dicoding.habitapp.ui.list
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,17 +21,14 @@ class HabitAdapter(
         val view = LayoutInflater.from(parent.context).inflate(R.layout.habit_item, parent, false)
         return HabitViewHolder(view)
     }
-
     override fun onBindViewHolder(holder: HabitViewHolder, position: Int) {
         //TODO 9 : Get data and bind them to ViewHolder
         val habit = getItem(position) as Habit
         holder.bind(habit)
     }
-
     inner class HabitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         private val tvTitle: TextView = itemView.findViewById(R.id.item_tv_title)
-        val ivPriority: ImageView = itemView.findViewById(R.id.item_priority_level)
+        private val ivPriority: ImageView = itemView.findViewById(R.id.item_priority_level)
         private val tvStartTime: TextView = itemView.findViewById(R.id.item_tv_start_time)
         private val tvMinutes: TextView = itemView.findViewById(R.id.item_tv_minutes)
 
@@ -43,10 +41,14 @@ class HabitAdapter(
             itemView.setOnClickListener {
                 onClick(habit)
             }
+
+            when (habit.priorityLevel){
+                itemView.context.resources.getStringArray(R.array.priority_level)[2] -> ivPriority.setImageResource(R.drawable.ic_priority_low)
+                itemView.context.resources.getStringArray(R.array.priority_level)[1] -> ivPriority.setImageResource(R.drawable.ic_priority_medium)
+                itemView.context.resources.getStringArray(R.array.priority_level)[0] -> ivPriority.setImageResource(R.drawable.ic_priority_high)
+            }
         }
-
     }
-
     companion object {
 
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Habit>() {
@@ -58,7 +60,5 @@ class HabitAdapter(
                 return oldItem == newItem
             }
         }
-
     }
-
 }
