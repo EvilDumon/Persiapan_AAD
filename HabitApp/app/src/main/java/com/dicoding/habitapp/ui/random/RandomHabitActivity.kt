@@ -43,6 +43,5 @@ class RandomHabitActivity : AppCompatActivity() {
         viewModel.priorityLevelLow.observe(this) {
             adapter.submitData(RandomHabitAdapter.PageType.LOW, it)
         }
-
     }
 }

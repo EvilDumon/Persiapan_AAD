@@ -13,6 +13,7 @@ data class Habit(
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+
     @ColumnInfo(name = "title")
     val title: String,
     @ColumnInfo(name = "minutesFocus")
