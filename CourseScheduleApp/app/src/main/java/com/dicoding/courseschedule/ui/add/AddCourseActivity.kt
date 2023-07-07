@@ -11,10 +11,13 @@ import android.widget.TextView
 import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProvider
 import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.ui.home.HomeActivity
 import com.dicoding.courseschedule.ui.home.HomeViewModel
 import com.dicoding.courseschedule.ui.list.ListActivity
+import com.dicoding.courseschedule.ui.list.ListViewModel
+import com.dicoding.courseschedule.ui.list.ListViewModelFactory
 import com.dicoding.courseschedule.ui.setting.SettingsActivity
 import com.dicoding.courseschedule.ui.setting.SettingsFragment
 import com.dicoding.courseschedule.util.TimePickerFragment
@@ -36,6 +39,9 @@ class AddCourseActivity : AppCompatActivity(), TimePickerFragment.DialogTimeList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
+
+        val factory = ListViewModelFactory.createFactory(this)
+        viewModel = ViewModelProvider(this, factory).get(AddCourseViewModel::class.java)
 
         courseName = findViewById(R.id.ed_course_name)
         day = findViewById(R.id.spinner_day)
