@@ -3,8 +3,10 @@ package com.dicoding.todoapp.ui.detail
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.dicoding.todoapp.R
-import com.dicoding.todoapp.ui.list.TaskViewModel
+import com.dicoding.todoapp.ui.ViewModelFactory
+import com.dicoding.todoapp.utils.DateConverter.convertMillisToString
 import com.dicoding.todoapp.utils.TASK_ID
 import com.google.android.material.textfield.TextInputEditText
 
@@ -16,6 +18,9 @@ class DetailTaskActivity : AppCompatActivity() {
         setContentView(R.layout.activity_task_detail)
 
         //TODO 11 : Show detail task and implement delete action
+        val factory = ViewModelFactory.getInstance(this)
+        detailTaskViewModel = ViewModelProvider(this, factory).get( DetailTaskViewModel::class.java )
+
         val id = intent.extras?.getInt(TASK_ID)
 
         detailTaskViewModel.setTaskId(id)
@@ -27,7 +32,7 @@ class DetailTaskActivity : AppCompatActivity() {
         detailTaskViewModel.task.observe(this){
             edTitle.setText(it.title)
             edDescription.setText(it.description)
-            edDueDate.setText(it.dueDateMillis.toString())
+            edDueDate.setText(convertMillisToString(it.dueDateMillis))
         }
 
         btnDelete.setOnClickListener{

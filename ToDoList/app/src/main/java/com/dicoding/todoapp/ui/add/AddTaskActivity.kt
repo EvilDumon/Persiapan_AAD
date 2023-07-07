@@ -1,14 +1,18 @@
 package com.dicoding.todoapp.ui.add
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.dicoding.todoapp.R
 import com.dicoding.todoapp.data.Task
+import com.dicoding.todoapp.ui.ViewModelFactory
+import com.dicoding.todoapp.ui.list.TaskActivity
 import com.dicoding.todoapp.utils.DatePickerFragment
 import com.google.android.material.textfield.TextInputEditText
 import java.text.SimpleDateFormat
@@ -29,6 +33,9 @@ class AddTaskActivity : AppCompatActivity(), DatePickerFragment.DialogDateListen
         supportActionBar?.title = getString(R.string.add_task)
         edTitle = findViewById(R.id.add_ed_title)
         edDescription = findViewById(R.id.add_ed_description)
+
+        val factory = ViewModelFactory.getInstance(this)
+        addTaskViewModel = ViewModelProvider(this, factory).get( AddTaskViewModel::class.java )
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -47,6 +54,9 @@ class AddTaskActivity : AppCompatActivity(), DatePickerFragment.DialogDateListen
                         dueDateMillis = dueDateMillis,
                     )
                 )
+                val intent = Intent(this, TaskActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
                 true
             }
             else -> super.onOptionsItemSelected(item)
