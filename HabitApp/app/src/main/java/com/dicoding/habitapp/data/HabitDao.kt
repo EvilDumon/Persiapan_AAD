@@ -19,10 +19,10 @@ interface HabitDao {
     @Query("SELECT * FROM habits WHERE id=:habitId")
     fun getHabitById(habitId: Int): LiveData<Habit>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertHabit(habit: Habit): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(vararg habits: Habit)
 
     @Delete

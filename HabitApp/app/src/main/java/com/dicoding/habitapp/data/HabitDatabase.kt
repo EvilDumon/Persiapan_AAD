@@ -12,6 +12,7 @@ import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import java.util.concurrent.Executors
 
 //TODO 3 : Define room database class and prepopulate database using JSON
 @Database(
@@ -34,7 +35,16 @@ abstract class HabitDatabase : RoomDatabase() {
                     HabitDatabase::class.java,
                     "habit.db"
                 )
-                    .addCallback(StartingHabits(context))
+                    .addCallback(object : Callback(){
+                        override fun onCreate(db: SupportSQLiteDatabase) {
+                            super.onCreate(db)
+                            INSTANCE?.let { database ->
+                                Executors.newSingleThreadExecutor().execute {
+                                    fillWithStartingData(context, database.habitDao())
+                                }
+                            }
+                        }
+                    })
                     .build()
                 INSTANCE = instance
                 instance
@@ -80,13 +90,6 @@ abstract class HabitDatabase : RoomDatabase() {
                 exception.printStackTrace()
             }
             return null
-        }
-    }
-    class StartingHabits(private val context: Context) :Callback() {
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            super.onCreate(db)
-            val dao = getInstance(context).habitDao()
-            fillWithStartingData(context, dao)
         }
     }
 }

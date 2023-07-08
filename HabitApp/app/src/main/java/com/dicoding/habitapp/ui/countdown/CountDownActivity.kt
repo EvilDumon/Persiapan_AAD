@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.preference.PreferenceManager
 import androidx.work.*
 import com.dicoding.habitapp.R
 import com.dicoding.habitapp.data.Habit
@@ -16,7 +14,6 @@ import com.dicoding.habitapp.utils.HABIT
 import com.dicoding.habitapp.utils.HABIT_ID
 import com.dicoding.habitapp.utils.HABIT_TITLE
 import com.dicoding.habitapp.utils.NOTIF_UNIQUE_WORK
-import org.w3c.dom.Text
 
 class CountDownActivity : AppCompatActivity() {
 
@@ -42,19 +39,18 @@ class CountDownActivity : AppCompatActivity() {
         val workManager = WorkManager.getInstance(applicationContext)
 
         findViewById<Button>(R.id.btn_start).setOnClickListener {
-            val data = workDataOf(
-                HABIT_ID to habit.id,
-                HABIT_TITLE to habit.title
-            )
-            val request = OneTimeWorkRequestBuilder<NotificationWorker>()
-                .setInputData(data)
+            val inputData = Data.Builder()
+                .putInt(HABIT_ID, habit.id)
+                .putString(HABIT_TITLE, habit.title)
                 .build()
-            workManager.enqueue(request)
-
+            val notificationWorkRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
+                .setInputData(inputData)
+                .build()
+            workManager.enqueue(notificationWorkRequest)
         }
 
         findViewById<Button>(R.id.btn_stop).setOnClickListener {
-            workManager.cancelAllWorkByTag(habit.id.toString())
+            workManager.cancelAllWorkByTag(NOTIF_UNIQUE_WORK)
         }
     }
 

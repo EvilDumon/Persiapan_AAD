@@ -44,18 +44,19 @@ class RandomHabitAdapter(
         //TODO 14 : Create view and bind data to item view
         private val title = itemView.findViewById<TextView>(R.id.pager_tv_title)
         private val startTime = itemView.findViewById<TextView>(R.id.pager_tv_start_time)
-        private val ivPriority = itemView.findViewById<ImageView>(R.id.item_priority_level)
+        private val ivPriority = itemView.findViewById<ImageView>(R.id.imageView)
         private val minutes = itemView.findViewById<TextView>(R.id.pager_tv_minutes)
         private val btnCountDown = itemView.findViewById<Button>(R.id.btn_open_count_down)
         fun bind(pageType: PageType, pageData: Habit) {
             title.text = pageData.title
             startTime.text = pageData.startTime
             minutes.text = pageData.minutesFocus.toInt().toString()
-            when(pageType){
-                PageType.LOW -> ivPriority.setImageResource(R.drawable.ic_priority_low)
-                PageType.MEDIUM -> ivPriority.setImageResource(R.drawable.ic_priority_medium)
-                PageType.HIGH -> ivPriority.setImageResource(R.drawable.ic_priority_high)
-            }
+            ivPriority.setImageResource(when(pageType){
+                PageType.LOW -> R.drawable.ic_priority_low
+                PageType.MEDIUM -> R.drawable.ic_priority_medium
+                PageType.HIGH -> R.drawable.ic_priority_high
+            })
+
             btnCountDown.setOnClickListener{
                 onClick(pageData)
             }
