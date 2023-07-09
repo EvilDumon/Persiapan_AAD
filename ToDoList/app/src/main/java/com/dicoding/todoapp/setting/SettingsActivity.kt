@@ -1,6 +1,8 @@
 package com.dicoding.todoapp.setting
 
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceFragmentCompat
@@ -9,6 +11,7 @@ import androidx.work.*
 import com.dicoding.todoapp.R
 import com.dicoding.todoapp.notification.NotificationWorker
 import com.dicoding.todoapp.utils.NOTIFICATION_CHANNEL_ID
+import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 
 class SettingsActivity : AppCompatActivity() {
@@ -34,7 +37,9 @@ class SettingsActivity : AppCompatActivity() {
                 val channelName = getString(R.string.notify_channel_name)
                 //TODO 13 : Schedule and cancel daily reminder using WorkManager with data channelName
                 val workManager = WorkManager.getInstance(requireContext())
-                val data = workDataOf("channelName" to channelName)
+                val data = Data.Builder()
+                    .putString("channelName", channelName)
+                    .build()
 
                 val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(1, TimeUnit.DAYS)
                     .setInputData(data)
