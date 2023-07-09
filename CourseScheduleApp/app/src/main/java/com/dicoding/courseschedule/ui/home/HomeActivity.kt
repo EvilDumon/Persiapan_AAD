@@ -6,14 +6,15 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.data.Course
+import com.dicoding.courseschedule.data.DataRepository
+import com.dicoding.courseschedule.ui.ViewModelFactory
 import com.dicoding.courseschedule.ui.add.AddCourseActivity
 import com.dicoding.courseschedule.ui.list.ListActivity
-import com.dicoding.courseschedule.ui.list.ListViewModel
-import com.dicoding.courseschedule.ui.list.ListViewModelFactory
 import com.dicoding.courseschedule.ui.setting.SettingsActivity
 import com.dicoding.courseschedule.util.DayName
 import com.dicoding.courseschedule.util.QueryType
@@ -21,9 +22,8 @@ import com.dicoding.courseschedule.util.timeDifference
 
 //TODO 15 : Write UI test to validate when user tap Add Course (+) Menu, the AddCourseActivity is displayed
 class HomeActivity : AppCompatActivity() {
-
-    private lateinit var viewModel: HomeViewModel
     private var queryType = QueryType.CURRENT_DAY
+    private lateinit var viewModel : HomeViewModel
 
     //TODO 5 : Show today schedule in CardHomeView and implement menu action
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +31,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         supportActionBar?.title = resources.getString(R.string.today_schedule)
 
-        val factory = ListViewModelFactory.createFactory(this)
+        val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
 
         viewModel.todaySchedule.observe(this){

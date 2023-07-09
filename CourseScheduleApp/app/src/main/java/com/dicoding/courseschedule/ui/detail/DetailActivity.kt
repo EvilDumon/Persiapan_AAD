@@ -7,8 +7,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.data.Course
+import com.dicoding.courseschedule.ui.home.HomeViewModel
 import com.dicoding.courseschedule.util.DayName.Companion.getByNumber
 
 class DetailActivity : AppCompatActivity() {
@@ -25,6 +27,7 @@ class DetailActivity : AppCompatActivity() {
 
         val courseId = intent.getIntExtra(COURSE_ID, 0)
         val factory = DetailViewModelFactory.createFactory(this, courseId)
+        viewModel = ViewModelProvider(this, factory).get(DetailViewModel::class.java)
 
         viewModel.course.observe(this, Observer(this::showCourseDetail))
     }

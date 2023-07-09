@@ -12,6 +12,7 @@ import androidx.work.workDataOf
 import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.notification.DailyReminder
 import com.dicoding.courseschedule.util.NOTIFICATION_CHANNEL_NAME
+import com.dicoding.courseschedule.util.NightMode
 import java.util.concurrent.TimeUnit
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -22,9 +23,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val darkModePreference = findPreference<ListPreference>(getString(R.string.pref_key_dark))
         darkModePreference?.setOnPreferenceChangeListener { preference, newValue ->
             val mode = when (newValue as String) {
-                resources.getStringArray(R.array.dark_mode)[0] -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-                resources.getStringArray(R.array.dark_mode)[1] -> AppCompatDelegate.MODE_NIGHT_YES
-                else -> AppCompatDelegate.MODE_NIGHT_NO
+                resources.getStringArray(R.array.dark_mode_value)[0] -> NightMode.AUTO.value
+                resources.getStringArray(R.array.dark_mode_value)[1] -> NightMode.ON.value
+                else -> NightMode.OFF.value
             }
             updateTheme(mode)
         }
@@ -32,22 +33,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val prefNotification = findPreference<SwitchPreference>(getString(R.string.pref_key_notify))
         prefNotification?.setOnPreferenceChangeListener { preference, newValue ->
             val workManager = WorkManager.getInstance(requireContext())
-            val data = workDataOf("channelName" to NOTIFICATION_CHANNEL_NAME)
-
-            val workRequest = PeriodicWorkRequestBuilder<DailyReminder>(1, TimeUnit.DAYS)
-                .setInputData(data)
-                .build()
-
             if (newValue as Boolean) {
                 // Enable the daily reminder
-                workManager.enqueueUniquePeriodicWork(
-                    "DailyReminder",
-                    ExistingPeriodicWorkPolicy.REPLACE,
-                    workRequest
-                )
+                DailyReminder().setDailyReminder(requireContext())
             } else {
                 // Cancel the daily reminder
-                workManager.cancelUniqueWork("DailyReminder")
+                DailyReminder().cancelAlarm(requireContext())
             }
             true
         }

@@ -8,14 +8,11 @@ import com.dicoding.courseschedule.data.DataRepository
 import com.dicoding.courseschedule.util.QueryType
 
 class HomeViewModel(repository: DataRepository): ViewModel() {
-
     private val _queryType = MutableLiveData<QueryType>()
-    private val _todaySchedule = MutableLiveData<List<Course>>()
-    val todaySchedule: LiveData<List<Course>> = _todaySchedule
+    val todaySchedule: LiveData<List<Course>> = repository.getTodaySchedule()
 
     init {
         _queryType.value = QueryType.CURRENT_DAY
-        _todaySchedule.value = repository.getTodaySchedule()
     }
 
     fun setQueryType(queryType: QueryType) {

@@ -8,24 +8,19 @@ import android.view.MenuItem
 import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.courseschedule.R
+import com.dicoding.courseschedule.data.DataRepository
+import com.dicoding.courseschedule.ui.ViewModelFactory
 import com.dicoding.courseschedule.ui.home.HomeActivity
 import com.dicoding.courseschedule.ui.home.HomeViewModel
-import com.dicoding.courseschedule.ui.list.ListActivity
-import com.dicoding.courseschedule.ui.list.ListViewModel
-import com.dicoding.courseschedule.ui.list.ListViewModelFactory
-import com.dicoding.courseschedule.ui.setting.SettingsActivity
-import com.dicoding.courseschedule.ui.setting.SettingsFragment
 import com.dicoding.courseschedule.util.TimePickerFragment
 import com.google.android.material.textfield.TextInputEditText
 
 class AddCourseActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListener{
 
-    private lateinit var viewModel: AddCourseViewModel
+    private lateinit var viewModel : AddCourseViewModel
 
     private lateinit var courseName: TextInputEditText
     private lateinit var lecturer: TextInputEditText
@@ -40,7 +35,7 @@ class AddCourseActivity : AppCompatActivity(), TimePickerFragment.DialogTimeList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
 
-        val factory = ListViewModelFactory.createFactory(this)
+        val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory).get(AddCourseViewModel::class.java)
 
         courseName = findViewById(R.id.ed_course_name)

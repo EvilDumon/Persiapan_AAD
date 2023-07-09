@@ -3,8 +3,10 @@ package com.dicoding.courseschedule.ui.add
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.dicoding.courseschedule.data.Course
 import com.dicoding.courseschedule.data.DataRepository
+import com.dicoding.courseschedule.ui.home.HomeViewModel
 import com.dicoding.courseschedule.util.Event
 
 class AddCourseViewModel(private val repository: DataRepository) : ViewModel() {
@@ -36,5 +38,14 @@ class AddCourseViewModel(private val repository: DataRepository) : ViewModel() {
         )
         repository.insert(course)
         _saved.value = Event(true)
+    }
+}
+
+class AddCourseViewModelFactory(private val dataRepository: DataRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
+            return AddCourseViewModel(dataRepository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

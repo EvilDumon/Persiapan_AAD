@@ -13,7 +13,6 @@ import java.util.Calendar
 
 //TODO 4 : Implement repository with appropriate dao
 class DataRepository(private val dao: CourseDao) {
-
     fun getNearestSchedule(queryType: QueryType) : LiveData<Course?> {
         val query = QueryUtil.nearestQuery(queryType)
         return dao.getNearestSchedule(query)
@@ -35,7 +34,7 @@ class DataRepository(private val dao: CourseDao) {
         return dao.getCourse(id)
     }
 
-    fun getTodaySchedule() : List<Course> {
+    fun getTodaySchedule() : LiveData<List<Course>> {
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         return dao.getTodaySchedule(day)
@@ -50,17 +49,20 @@ class DataRepository(private val dao: CourseDao) {
     }
 
     companion object {
-        @Volatile
-        private var instance: DataRepository? = null
         private const val PAGE_SIZE = 10
 
-        fun getInstance(context: Context): DataRepository? {
-            return instance ?: synchronized(DataRepository::class.java) {
+        @Volatile
+        private var instance: DataRepository? = null
+
+        fun getInstance(context: Context): DataRepository {
+            return instance ?: synchronized(this) {
                 if (instance == null) {
                     val database = CourseDatabase.getInstance(context)
-                    instance = DataRepository(database.courseDao())
+                    instance = DataRepository(
+                        database.courseDao()
+                    )
                 }
-                return instance
+                return instance as DataRepository
             }
         }
     }

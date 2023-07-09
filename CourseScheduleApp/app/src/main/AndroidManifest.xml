@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dicoding.courseschedule">
 
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
@@ -26,6 +27,10 @@
             android:label="@string/title_activity_list"
             android:parentActivityName=".ui.home.HomeActivity"
             android:theme="@style/Theme.CourseSchedule.NoActionBar" />
+        <activity
+            android:name=".ui.add.AddCourseActivity"
+            android:label="@string/add_course"
+            android:parentActivityName=".ui.home.HomeActivity"/>
 
         <activity android:name=".ui.home.HomeActivity"
             android:exported="true">
