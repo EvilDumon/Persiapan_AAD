@@ -51,13 +51,14 @@ class SettingsActivity : AppCompatActivity() {
                 val channelName = getString(R.string.notify_channel_name)
                 val data = Data.Builder().putString("channelName", channelName).build()
                 val workManager = WorkManager.getInstance(requireContext())
-                val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(1, TimeUnit.DAYS)
+                val workRequest = PeriodicWorkRequest.Builder(NotificationWorker::class.java, 1, TimeUnit.DAYS)
                     .setInputData(data)
                     .build()
                 (preference as SwitchPreference).isChecked = newValue as Boolean
                 if (newValue) {
                     //enqueue()
                     workManager.enqueue(workRequest)
+                    workManager.getWorkInfoByIdLiveData(workRequest.id)
                 } else {
                     //cancelPeriodicTask()
                     workManager.cancelWorkById(workRequest.id)
