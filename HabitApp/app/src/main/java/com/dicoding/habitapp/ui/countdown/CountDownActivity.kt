@@ -37,25 +37,35 @@ class CountDownActivity : AppCompatActivity() {
 
         //TODO 13 : Start and cancel One Time Request WorkManager to notify when time is up.
         val workManager = WorkManager.getInstance(applicationContext)
-
+        viewModel.eventCountDownFinish.observe(this){
+            if (it){
+                val inputData = Data.Builder()
+                    .putInt(HABIT_ID, habit.id)
+                    .putString(HABIT_TITLE, habit.title)
+                    .build()
+                val notificationWorkRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
+                    .setInputData(inputData)
+                    .build()
+                workManager.enqueueUniqueWork(
+                    NOTIF_UNIQUE_WORK,
+                    ExistingWorkPolicy.REPLACE,
+                    notificationWorkRequest
+                )
+            }
+        }
         findViewById<Button>(R.id.btn_start).setOnClickListener {
-            val inputData = Data.Builder()
-                .putInt(HABIT_ID, habit.id)
-                .putString(HABIT_TITLE, habit.title)
-                .build()
-            val notificationWorkRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
-                .setInputData(inputData)
-                .build()
-            workManager.enqueue(notificationWorkRequest)
+            viewModel.startTimer()
+            updateButtonState(false)
         }
 
         findViewById<Button>(R.id.btn_stop).setOnClickListener {
             workManager.cancelAllWorkByTag(NOTIF_UNIQUE_WORK)
+            updateButtonState(true)
         }
     }
 
     private fun updateButtonState(isRunning: Boolean) {
-        findViewById<Button>(R.id.btn_start).isEnabled = !isRunning
-        findViewById<Button>(R.id.btn_stop).isEnabled = isRunning
+        findViewById<Button>(R.id.btn_start).isEnabled = isRunning
+        findViewById<Button>(R.id.btn_stop).isEnabled = !isRunning
     }
 }
