@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.dicoding.habitapp.R
 import com.dicoding.habitapp.ui.ViewModelFactory
+import com.dicoding.habitapp.ui.countdown.CountDownActivity
 import com.dicoding.habitapp.utils.HABIT
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.dicoding.habitapp.ui.countdown.CountDownActivity
 
 class RandomHabitActivity : AppCompatActivity() {
 

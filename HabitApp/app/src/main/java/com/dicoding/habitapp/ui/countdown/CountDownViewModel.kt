@@ -4,8 +4,8 @@ import android.os.CountDownTimer
 import android.text.format.DateUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 
 class CountDownViewModel : ViewModel() {
 
@@ -15,7 +15,7 @@ class CountDownViewModel : ViewModel() {
     private val currentTime = MutableLiveData<Long>()
 
     // The String version of the current time (hh:mm:ss)
-    val currentTimeString = Transformations.map(currentTime) { time ->
+    val currentTimeString = currentTime.map { time ->
         DateUtils.formatElapsedTime(time / 1000)
     }
 

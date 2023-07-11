@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.work.*
 import com.dicoding.habitapp.R
 import com.dicoding.habitapp.data.Habit
+import com.dicoding.habitapp.data.HabitRepository
 import com.dicoding.habitapp.notification.NotificationWorker
 import com.dicoding.habitapp.utils.HABIT
 import com.dicoding.habitapp.utils.HABIT_ID
@@ -37,8 +38,8 @@ class CountDownActivity : AppCompatActivity() {
 
         //TODO 13 : Start and cancel One Time Request WorkManager to notify when time is up.
         val workManager = WorkManager.getInstance(applicationContext)
-        viewModel.eventCountDownFinish.observe(this){
-            if (it){
+        viewModel.eventCountDownFinish.observe(this) {
+            if (it) {
                 val inputData = Data.Builder()
                     .putInt(HABIT_ID, habit.id)
                     .putString(HABIT_TITLE, habit.title)
@@ -61,6 +62,7 @@ class CountDownActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_stop).setOnClickListener {
             workManager.cancelAllWorkByTag(NOTIF_UNIQUE_WORK)
             updateButtonState(true)
+
         }
     }
 
