@@ -11,10 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.courseschedule.R
-import com.dicoding.courseschedule.data.DataRepository
-import com.dicoding.courseschedule.ui.ViewModelFactory
 import com.dicoding.courseschedule.ui.home.HomeActivity
-import com.dicoding.courseschedule.ui.home.HomeViewModel
 import com.dicoding.courseschedule.util.TimePickerFragment
 import com.google.android.material.textfield.TextInputEditText
 
@@ -35,7 +32,7 @@ class AddCourseActivity : AppCompatActivity(), TimePickerFragment.DialogTimeList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
 
-        val factory = ViewModelFactory.getInstance(this)
+        val factory = AddCourseViewModelFactory.createFactory(this)
         viewModel = ViewModelProvider(this, factory).get(AddCourseViewModel::class.java)
 
         courseName = findViewById(R.id.ed_course_name)

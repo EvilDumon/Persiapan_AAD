@@ -1,4 +1,4 @@
-package com.dicoding.courseschedule.ui.list
+package com.dicoding.courseschedule.ui.add
 
 import android.app.Activity
 import androidx.lifecycle.ViewModel
@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dicoding.courseschedule.data.DataRepository
 import java.lang.reflect.InvocationTargetException
 
-class ListViewModelFactory(private val repository: DataRepository?): ViewModelProvider.Factory {
+class AddCourseViewModelFactory(private val repository: DataRepository?): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         try {
             return modelClass.getConstructor(DataRepository::class.java).newInstance(repository)
@@ -22,11 +22,11 @@ class ListViewModelFactory(private val repository: DataRepository?): ViewModelPr
     }
 
     companion object {
-        fun createFactory(activity: Activity): ListViewModelFactory {
+        fun createFactory(activity: Activity): AddCourseViewModelFactory {
             val context = activity.applicationContext
                 ?: throw IllegalStateException("Not yet attached to Application")
 
-            return ListViewModelFactory(DataRepository.getInstance(context))
+            return AddCourseViewModelFactory(DataRepository.getInstance(context))
         }
     }
 }

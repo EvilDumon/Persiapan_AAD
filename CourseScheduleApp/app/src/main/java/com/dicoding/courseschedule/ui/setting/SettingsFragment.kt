@@ -1,22 +1,19 @@
 package com.dicoding.courseschedule.ui.setting
 
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
 import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.notification.DailyReminder
-import com.dicoding.courseschedule.util.NOTIFICATION_CHANNEL_NAME
 import com.dicoding.courseschedule.util.NightMode
-import java.util.concurrent.TimeUnit
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
         //TODO 10 : Update theme based on value in ListPreference
@@ -32,7 +29,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         //TODO 11 : Schedule and cancel notification in DailyReminder based on SwitchPreference
         val prefNotification = findPreference<SwitchPreference>(getString(R.string.pref_key_notify))
         prefNotification?.setOnPreferenceChangeListener { preference, newValue ->
-            val workManager = WorkManager.getInstance(requireContext())
             if (newValue as Boolean) {
                 // Enable the daily reminder
                 DailyReminder().setDailyReminder(requireContext())

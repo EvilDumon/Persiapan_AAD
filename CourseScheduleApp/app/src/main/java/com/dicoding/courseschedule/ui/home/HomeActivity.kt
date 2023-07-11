@@ -6,13 +6,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.courseschedule.R
 import com.dicoding.courseschedule.data.Course
-import com.dicoding.courseschedule.data.DataRepository
-import com.dicoding.courseschedule.ui.ViewModelFactory
 import com.dicoding.courseschedule.ui.add.AddCourseActivity
 import com.dicoding.courseschedule.ui.list.ListActivity
 import com.dicoding.courseschedule.ui.setting.SettingsActivity
@@ -31,16 +29,11 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         supportActionBar?.title = resources.getString(R.string.today_schedule)
 
-        val factory = ViewModelFactory.getInstance(this)
+        val factory = HomeViewModelFactory.createFactory(this)
         viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
 
-        viewModel.todaySchedule.observe(this){
-            it.forEach{ course ->
-                showTodaySchedule(course)
-            }
-        }
+        viewModel.nearestSchedule.observe(this, Observer ( this::showTodaySchedule ))
     }
-
     private fun showTodaySchedule(course: Course?) {
         checkQueryType(course)
         course?.apply {

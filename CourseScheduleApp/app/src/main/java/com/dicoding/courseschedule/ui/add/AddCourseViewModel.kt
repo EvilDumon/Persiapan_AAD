@@ -40,12 +40,3 @@ class AddCourseViewModel(private val repository: DataRepository) : ViewModel() {
         _saved.value = Event(true)
     }
 }
-
-class AddCourseViewModelFactory(private val dataRepository: DataRepository) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            return AddCourseViewModel(dataRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
