@@ -29,7 +29,7 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
 
         return TaskStackBuilder.create(applicationContext).run {
             addNextIntentWithParentStack(intent)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 getPendingIntent(
                     0,
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
@@ -43,7 +43,7 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun doWork(): Result {
         val prefManager = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         val shouldNotify = prefManager.getBoolean(applicationContext.getString(R.string.pref_key_notify), false)
