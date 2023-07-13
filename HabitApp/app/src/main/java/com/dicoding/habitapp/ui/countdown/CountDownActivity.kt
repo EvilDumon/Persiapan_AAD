@@ -61,6 +61,7 @@ class CountDownActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_stop).setOnClickListener {
             workManager.cancelAllWorkByTag(NOTIF_UNIQUE_WORK)
             updateButtonState(true)
+            viewModel.resetTimer()
         }
     }
 
